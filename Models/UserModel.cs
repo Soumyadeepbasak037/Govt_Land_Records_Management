@@ -1,0 +1,12 @@
+﻿namespace govt_land_service.Models
+{
+    public class UserModel
+    {
+        public int id { get; set; }
+        public string? name { get; set; }
+        public string? email { get; set; }
+        public string? password_hash { get; set; }
+        public string? phone { get; set; }
+        public bool is_active { get; set; } = true;
+    }
+}
