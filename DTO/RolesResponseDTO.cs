@@ -3,7 +3,7 @@
     public record RolesResponseDTO
     (
         int userId,
-        int roleId,
-        string roleName
+        int[] roleId,
+        string[] roleName
         );
 }

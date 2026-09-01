@@ -57,8 +57,9 @@ namespace govt_land_service.Service
             }
         }
 
-        private string generateToken(UserModel user)
+        private async Task<string> generateToken(UserModel user)
         {
+            //var role = await 
             var claims = new[]
             {
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using govt_land_service.DTO;
+using govt_land_service.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var jwtKey = builder.Configuration["Jwt:Key"]
@@ -41,7 +42,7 @@ builder.Services.AddAuthentication(
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -92,5 +93,39 @@ app.MapPost("/register", async (
                             statusCode: StatusCodes.Status400BadRequest);
     }
     return Results.Json(new { userId = userId }, statusCode: StatusCodes.Status201Created);
+});
+
+//Roles Routes
+
+app.MapPost("/roles/CreateRole", async (
+    CreateRoleRequestDTO request,
+    IRoleService roleService
+    ) =>
+{
+    var roleIDs = await roleService.CreateRole(request.roleNames);
+    return Results.Json(new {roleids =  roleIDs}, statusCode: StatusCodes.Status201Created);
+}
+);
+
+app.MapPost("/roles/GetRoleById", async(
+       GetRolesRequestDTO request,
+       IRoleService roleService
+    ) =>
+{
+    RolesModel response = await roleService.GetRolesByUserIdAsync(request.userId);
+    if (response is null)
+    {
+        return Results.Json(new { message = "Error occured during fetching Roles" },statusCode: StatusCodes.Status500InternalServerError);
+    }
+    return Results.Json(response);
+});
+
+app.MapPost("/roles/AssignRolesByUserId", async (AssignOrRemoveRolesByUserIdRequestDTO request, IRoleService roleService) =>
+{
+    RolesResponseDTO response = await roleService.AssignRolesToUser(request.userId, request.roleIds);
+    if (response is null) {
+        return Results.Json(new { message = "Couldn't assign role to user" });
+    }
+    return Results.Json<RolesResponseDTO>(response);
 });
 app.Run();

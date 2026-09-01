@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("govt_land_service")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d33b9483c4e520ba35596531c83de8e4889e816")]
 [assembly: System.Reflection.AssemblyProductAttribute("govt_land_service")]
 [assembly: System.Reflection.AssemblyTitleAttribute("govt_land_service")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
