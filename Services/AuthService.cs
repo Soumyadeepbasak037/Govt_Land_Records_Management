@@ -17,10 +17,11 @@ namespace govt_land_service.Service
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
-
-        public AuthService(IConfiguration configuration)
+        private readonly IRoleService _roleService;
+        public AuthService(IConfiguration configuration,IRoleService roleservice)
         {
             _configuration = configuration;
+            _roleService = roleservice;
         }
 
         public async Task<string?> LoginAsync(string username, string password)
@@ -42,7 +43,7 @@ namespace govt_land_service.Service
 
                 if (user != null && BCrypt.Net.BCrypt.Verify(password, user.password_hash))
                 {
-                    string token = generateToken(user);
+                    string token = await generateToken(user);
                     return token;
                 }
                 else
@@ -59,8 +60,10 @@ namespace govt_land_service.Service
 
         private async Task<string> generateToken(UserModel user)
         {
-            //var role = await 
-            var claims = new[]
+            Console.WriteLine(user.id);
+            RolesModel role_model = await _roleService.GetRolesByUserIdAsync(user.id);
+            var roles = role_model.roleNames;
+            var claims = new List<Claim>
             {
 
             new Claim(
@@ -76,8 +79,12 @@ namespace govt_land_service.Service
             new Claim(
                 "id",
                 user.id.ToString()
-                )
-    };
+                )         
+        };
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)

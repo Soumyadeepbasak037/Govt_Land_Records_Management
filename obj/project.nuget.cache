@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3JrMXa4UBgk=",
+  "dgSpecHash": "26FFUWm5gs0=",
   "success": true,
   "projectFilePath": "D:\\CODE\\govt_land\\govt_land_service\\govt_land_service\\govt_land_service.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.11\\microsoft.aspnetcore.authentication.jwtbearer.10.0.11.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.11\\microsoft.aspnetcore.openapi.10.0.11.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.bcl.cryptography\\10.0.2\\microsoft.bcl.cryptography.10.0.2.nupkg.sha512",
+    "C:\\Users\\barun\\.nuget\\packages\\microsoft.extensions.apidescription.server\\10.0.0\\microsoft.extensions.apidescription.server.10.0.0.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.22.0\\microsoft.identitymodel.abstractions.8.22.0.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.22.0\\microsoft.identitymodel.jsonwebtokens.8.22.0.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.identitymodel.logging\\8.22.0\\microsoft.identitymodel.logging.8.22.0.nupkg.sha512",
@@ -17,6 +18,10 @@
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.22.0\\microsoft.identitymodel.tokens.8.22.0.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\microsoft.openapi\\2.7.5\\microsoft.openapi.2.7.5.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\npgsql\\10.0.3\\npgsql.10.0.3.nupkg.sha512",
+    "C:\\Users\\barun\\.nuget\\packages\\swashbuckle.aspnetcore\\10.2.3\\swashbuckle.aspnetcore.10.2.3.nupkg.sha512",
+    "C:\\Users\\barun\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\10.2.3\\swashbuckle.aspnetcore.swagger.10.2.3.nupkg.sha512",
+    "C:\\Users\\barun\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\10.2.3\\swashbuckle.aspnetcore.swaggergen.10.2.3.nupkg.sha512",
+    "C:\\Users\\barun\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\10.2.3\\swashbuckle.aspnetcore.swaggerui.10.2.3.nupkg.sha512",
     "C:\\Users\\barun\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.22.0\\system.identitymodel.tokens.jwt.8.22.0.nupkg.sha512"
   ],
   "logs": []

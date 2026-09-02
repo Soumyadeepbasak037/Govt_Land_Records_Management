@@ -44,3 +44,6 @@ D:\CODE\govt_land\govt_land_service\govt_land_service\obj\Debug\net10.0\govt_lan
 D:\CODE\govt_land\govt_land_service\govt_land_service\obj\Debug\net10.0\govt_land_service.genruntimeconfig.cache
 D:\CODE\govt_land\govt_land_service\govt_land_service\obj\Debug\net10.0\ref\govt_land_service.dll
 D:\CODE\govt_land\govt_land_service\govt_land_service\obj\Debug\net10.0\govt_land_service.sourcelink.json
+D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll

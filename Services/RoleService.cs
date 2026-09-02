@@ -7,7 +7,7 @@ namespace govt_land_service.Services
 {
     public class RoleService : IRoleService
     {
-        public readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         public RoleService(IConfiguration configuration)
         {
             _configuration = configuration;

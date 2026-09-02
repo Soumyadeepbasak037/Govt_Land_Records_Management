@@ -1,11 +1,12 @@
+using govt_land_service.DTO;
+using govt_land_service.Models;
 using govt_land_service.Service;
 using govt_land_service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
-using govt_land_service.DTO;
-using govt_land_service.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var jwtKey = builder.Configuration["Jwt:Key"]
@@ -31,7 +32,8 @@ builder.Services.AddAuthentication(
 
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtKey)
-            )
+            ),
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
@@ -43,6 +45,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -127,5 +130,26 @@ app.MapPost("/roles/AssignRolesByUserId", async (AssignOrRemoveRolesByUserIdRequ
         return Results.Json(new { message = "Couldn't assign role to user" });
     }
     return Results.Json<RolesResponseDTO>(response);
+});
+
+//Location Service Routes
+
+app.MapGet("/location/getStates", async (ILocationService locationService) => {
+    LocationData location = await locationService.GetStates();
+    if (location is null) {
+        return Results.Json(new { message = "No States currently in db" });
+    }
+    return Results.Json(location);
+});
+
+app.MapPost("/location/InsertDistricts", async (InsertDistrictsRequest request,ILocationService locationService)=>{
+
+    int affectedRows = await locationService.InsertDistricts(request.state_id,request.districts);
+    if(affectedRows == -1)
+    {
+        return Results.Json(new { message = "Districts couldnt be inserted" });
+
+    }
+    return Results.Json(new {message = $"{affectedRows} districts were newly inserted"});
 });
 app.Run();
