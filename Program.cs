@@ -1,4 +1,5 @@
 using govt_land_service.DTO;
+using govt_land_service.DTO.ProjectDTO;
 using govt_land_service.Models;
 using govt_land_service.Service;
 using govt_land_service.Services;
@@ -46,8 +47,15 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+
+// Add Swagger/OpenAPI services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -58,6 +66,11 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+}
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 //app.UseHttpsRedirection();
@@ -151,5 +164,11 @@ app.MapPost("/location/InsertDistricts", async (InsertDistrictsRequest request,I
 
     }
     return Results.Json(new {message = $"{affectedRows} districts were newly inserted"});
+});
+
+//Project Routes
+app.MapPost("/projects/new", async (CreateProjectDTO request, IProjectService service) => {
+    ProjectResponseDTO response = await service.CreateProjectAsync(request);
+    return Results.Json<ProjectResponseDTO>(response);
 });
 app.Run();
