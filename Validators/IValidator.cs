@@ -2,7 +2,6 @@
 {
     public interface IValidator
     {
-        public ValidationResult Validate();
-     
+        Task<ValidationResult> ValidateAsync();
     }
 }
