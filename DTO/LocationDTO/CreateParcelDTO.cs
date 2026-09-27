@@ -4,13 +4,13 @@
     {
         public long ProjectId { get; set; }
         public long VillageId { get; set; }
-        public string ParcelNumber { get; set; }
-        public string SurveyNumber { get; set; }
+        public required string ParcelNumber { get; set; }
+        public string? SurveyNumber { get; set; }
         public decimal Area { get; set; }
-        public string OwnershipStatus { get; set; }
-        public string AcquisitionStatus { get; set; }
+        public string OwnershipStatus { get; set; } = string.Empty;
+        public string AcquisitionStatus { get; set; } = "Pending";
 
-        public string Geometry { get; set; }
+        public required string Geometry { get; set; }
 
         public List<ParcelOwnerDTO> Owners { get; set; } = new List<ParcelOwnerDTO>();
     }

@@ -28,8 +28,8 @@ namespace govt_land_service.Services
             const string check_exists = """
 
                         SELECT 
-                EXISTS (SELECT 1 FROM projects WHERE id = 1) AS ProjectExists,
-                EXISTS (SELECT 1 FROM villages WHERE id = 2) AS VillageExists;
+                EXISTS (SELECT 1 FROM projects WHERE id = @ProjectId) AS "ProjectExists",
+                EXISTS (SELECT 1 FROM villages WHERE id = @VillageId) AS "VillageExists";
                 """;
 
             const string parcelSql = """
@@ -55,7 +55,7 @@ namespace govt_land_service.Services
                                             @OwnershipStatus,
                                             @AcquisitionStatus,
 
-                                            ST_Multi(ST_SetSRID(ST_GeomFromGeoJSON(@Geometry), 4326))
+                                            ST_Multi(ST_SetSRID(ST_GeomFromGeoJSON(@Geometry::text), 4326))
                                         )
                                         RETURNING id;
                                     """;
@@ -66,6 +66,7 @@ namespace govt_land_service.Services
                                 VALUES (@Name, @IdentifierType, @IdentifierHash, @Phone) 
                                 RETURNING id;
                             """;
+            //var updateStageSql = """INSERt INTO project_stages """;
             try
             {
                 var validationResult = await connection.QuerySingleAsync(check_exists, new { ProjectId = dto.ProjectId, VillageId = dto.VillageId }, transaction);
@@ -78,12 +79,49 @@ namespace govt_land_service.Services
                 {
                     throw new Exception($"Village with ID {dto.VillageId} does not exist.");
                 }
-                var parcelId = await connection.QuerySingleAsync();
+                var parcelId = await connection.ExecuteScalarAsync<long>(parcelSql, new { ProjectId = dto.ProjectId, VillageId = dto.VillageId, ParcelNumber = dto.ParcelNumber, SurveyNumber = dto.SurveyNumber, Area =dto.Area, OwnershipStatus=dto.OwnershipStatus , AcquisitionStatus=dto.AcquisitionStatus , Geometry =dto.Geometry},transaction);
+
+                foreach (var owner in dto.Owners) {
+                    long resolvedOwnerId;
+
+                    if (owner.OwnerId.HasValue && owner.OwnerId > 0)
+                    {
+                        resolvedOwnerId = owner.OwnerId.Value;
+                    }
+                    else
+                    {
+                        resolvedOwnerId = await connection.ExecuteScalarAsync<long>(
+                            insertNewOwnerSql,
+                            owner,
+                            transaction
+                        );
+                    }
+                    await connection.ExecuteAsync(linkOwnerSql, new
+                    {
+                        ParcelId = parcelId,
+                        OwnerId = resolvedOwnerId,
+                        OwnershipShare = owner.OwnershipShare
+                    }, transaction);
+                }
+
+                await transaction.CommitAsync();
+
+                ParcelResponseDTO response = new ParcelResponseDTO();
+                response.Id = parcelId;
+                response.ProjectId = dto.ProjectId;
+                response.SurveyNumber = dto.SurveyNumber;
+                response.Area = dto.Area;
+                response.Geometry = dto.Geometry;
+                response.AcquisitionStatus = dto.AcquisitionStatus;
+                return response;
             }
+
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                throw new Exception(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
+               
             }            
         }
     }

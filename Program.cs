@@ -1,4 +1,5 @@
 using govt_land_service.DTO;
+using govt_land_service.DTO.LocationDTO;
 using govt_land_service.DTO.ProjectDTO;
 using govt_land_service.Models;
 using govt_land_service.Service;
@@ -48,6 +49,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IParcelService, ParcelService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -170,5 +172,11 @@ app.MapPost("/location/InsertDistricts", async (InsertDistrictsRequest request,I
 app.MapPost("/projects/new", async (CreateProjectDTO request, IProjectService service) => {
     ProjectResponseDTO response = await service.CreateProjectAsync(request);
     return Results.Json<ProjectResponseDTO>(response);
+});
+
+//Parcel Routes
+app.MapPost("/parcels/new", async (CreateParcelDTO request, IParcelService service) => {
+    ParcelResponseDTO response = await service.CreateParcel(request);
+    return Results.Json<ParcelResponseDTO>(response);
 });
 app.Run();
