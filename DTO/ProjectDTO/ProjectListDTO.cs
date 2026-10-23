@@ -15,5 +15,7 @@
         public string? StateName { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public required string Geometry { get; set; }
     }
 }

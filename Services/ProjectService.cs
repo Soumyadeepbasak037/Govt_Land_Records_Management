@@ -70,7 +70,9 @@ namespace govt_land_service.Services
     FROM projects 
     WHERE id = @ID
 """;
-
+            //const string seed_stages = """INSERT INTO project_stages (stage_id,status) VALUES (1,'IN_PROGRESS'),(2,'Pending'),(3,'Pending'),(4,'Pending'),(5,'Pending'),(6,'Pending')""";
+            
+            
             try
             {
                 var parameters = new
@@ -106,31 +108,44 @@ namespace govt_land_service.Services
 
 
 
-                const string insertStatusSql = """
-            INSERT INTO project_stages
-            (
-                project_id,
-                stage,
-                status
-            )
-            VALUES
-            (
-                @ProjectId,
-                '0',
-                'DRAFT'
-                
-            );
-            """;
 
-                await connection.ExecuteAsync(
-                    insertStatusSql,
-                    new
-                    {
-                        ProjectId = projectId,
-                        UserId = dto.Userid
-                    },
-                    transaction);
+                //    const string insertStatusSql = """
+                //INSERT INTO project_stages
+                //(
+                //    project_id,
+                //    stage,
+                //    status
+                //)
+                //VALUES
+                //(
+                //    @ProjectId,
+                //    '0',
+                //    'DRAFT'
 
+                //);
+                //""";
+
+                //    await connection.ExecuteAsync(
+                //        insertStatusSql,
+                //        new
+                //        {
+                //            ProjectId = projectId,
+                //            UserId = dto.Userid
+                //        },
+                //        transaction);
+
+                const string max_stage_id_sql = """select max(id) from stage_names""";
+           
+                int max_stage_id = await connection.QuerySingleAsync<int>(max_stage_id_sql,transaction);
+
+                string seed_stages = """INSERT INTO project_stages (project_id,stage_id,status) VALUES (@ProjectId,1,'IN_PROGRESS'),""";
+                for (int i = 2; i < max_stage_id; i++)
+                {
+                    seed_stages += $"""(@ProjectId,{i},'Pending'),""";
+                }
+                seed_stages += $"""(@ProjectId,{max_stage_id},'Pending')""";
+                Console.WriteLine(seed_stages);
+                await connection.ExecuteAsync(seed_stages,new {ProjectId = projectId},transaction);
 
                 const string insertAuditSql = """
             INSERT INTO audit_logs
@@ -161,6 +176,7 @@ namespace govt_land_service.Services
                 await transaction.CommitAsync();
                 return response;
             }
+
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
@@ -172,6 +188,7 @@ namespace govt_land_service.Services
 
         public async Task<ProjectDetailsDTO?> GetProjectByIdAsync(long projectId)
         {
+            
             throw new NotImplementedException();
         }
 

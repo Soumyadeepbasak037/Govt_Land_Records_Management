@@ -12,7 +12,7 @@ namespace govt_land_service.Services
             _configuration = configuration;
         }
 
-
+        // if ownerId is null then create a new owner and get the id of the newly created owner and then add then link that to the parcels_owner table, else just link the given ownerid
         public async Task<ParcelResponseDTO> CreateParcel(CreateParcelDTO dto)
         {
             await using var connection =
