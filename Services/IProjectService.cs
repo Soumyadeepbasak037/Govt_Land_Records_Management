@@ -14,32 +14,32 @@ namespace govt_land_service.Services
             long projectId
         );
 
-        Task<ProjectResponseDTO> UpdateProjectAsync(
-            long projectId,
-            UpdateProjectDTO dto,
-            long userId
-        );
+        //Task<ProjectResponseDTO> UpdateProjectAsync(
+        //    long projectId,
+        //    UpdateProjectDTO dto,
+        //    long userId
+        //);
 
-        Task<ProjectResponseDTO> SubmitProjectAsync(
-            long projectId,
-            SubmitProjectDTO dto,
-            long userId
-        );
+        //Task<ProjectResponseDTO> SubmitProjectAsync(
+        //    long projectId,
+        //    SubmitProjectDTO dto,
+        //    long userId
+        //);
 
-        Task<ProjectResponseDTO> VerifyProjectAsync(
-            long projectId,
-            VerifyProjectDTO dto,
-            long userId
-        );
+        //Task<ProjectResponseDTO> VerifyProjectAsync(
+        //    long projectId,
+        //    VerifyProjectDTO dto,
+        //    long userId
+        //);
 
-        Task<ProjectResponseDTO> ApproveProjectAsync(
-            long projectId,
-            ApproveProjectDTO dto,
-            long userId
-        );
-        Task<IEnumerable<ProjectListDTO>> GetProjectsAsync(
-            ProjectFilterDTO filter
-        );
+        //Task<ProjectResponseDTO> ApproveProjectAsync(
+        //    long projectId,
+        //    ApproveProjectDTO dto,
+        //    long userId
+        //);
+        //Task<IEnumerable<ProjectListDTO>> GetProjectsAsync(
+        //    ProjectFilterDTO filter
+        //);
 
         //Task<ProjectResponseDTO> RejectProjectAsync(
         //    long projectId,
