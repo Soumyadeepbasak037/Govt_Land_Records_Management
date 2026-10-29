@@ -5,7 +5,7 @@ namespace govt_land_service.Services
 {
     public interface IProjectStages
     {
-        Task GetEligibleOfficers(EligibleOfficersDTO dto);
-        Task AssignOfficer(AssignOfficerDTO dto);
+        Task<EligibleOfficersResponseDTO[]> GetEligibleOfficers(EligibleOfficersDTO dto);
+        Task <AssignedOfficersResponseDTO> AssignOfficer(AssignOfficerDTO dto);
     }
 }

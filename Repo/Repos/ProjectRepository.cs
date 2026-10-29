@@ -29,7 +29,6 @@ public class ProjectRepository : IProjectRepository
         created_by AS CreatedBy,
         created_at AS CreatedAt,
         updated_at AS UpdatedAt,
-        geometry AS Geometry,
         ST_AsGeoJSON(geometry) AS GeometryGeoJson";
 
     public async Task<Project?> GetByIdAsync(long id, IDbTransaction? transaction = null)

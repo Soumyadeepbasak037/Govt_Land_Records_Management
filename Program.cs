@@ -1,12 +1,17 @@
 using govt_land_service.DTO;
 using govt_land_service.DTO.LocationDTO;
 using govt_land_service.DTO.ProjectDTO;
+using govt_land_service.DTO.ProjectStages;
 using govt_land_service.Models;
 using govt_land_service.Service;
 using govt_land_service.Services;
+using GovtLandService.Data.Interfaces;
+using GovtLandService.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
+using System.Data;
 using System.Security.Claims;
 using System.Text;
 
@@ -45,11 +50,25 @@ builder.Services.AddAuthentication(
 // Add services to the container.
 builder.Services.AddAuthorization();
 
+
+
+builder.Services.AddScoped<IDbConnection>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+
+    var connectionString =
+        configuration.GetConnectionString("DefaultConnection");
+
+    return new NpgsqlConnection(connectionString);
+});
+builder.Services.AddScoped<IProjectStageRepository,ProjectStageRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IParcelService, ParcelService>();
+builder.Services.AddScoped<IProjectStages,ProjectStageService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -172,6 +191,12 @@ app.MapPost("/location/InsertDistricts", async (InsertDistrictsRequest request,I
 app.MapPost("/projects/new", async (CreateProjectDTO request, IProjectService service) => {
     ProjectResponseDTO response = await service.CreateProjectAsync(request);
     return Results.Json<ProjectResponseDTO>(response);
+});
+
+//Project stages Management Routes
+app.MapPost("/projects/stages/eligible_individuals", async (EligibleOfficersDTO request, IProjectStages service) => {
+    var response = await service.GetEligibleOfficers(request);
+    return Results.Json(response);
 });
 
 //Parcel Routes

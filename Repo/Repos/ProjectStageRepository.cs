@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using govt_land_service.DTO.ProjectStages;
 using GovtLandService.Data.Entities;
 using GovtLandService.Data.Interfaces;
 
@@ -19,7 +20,7 @@ public class ProjectStageRepository : IProjectStageRepository
     private const string SelectColumns = @"
         id AS Id,
         project_id AS ProjectId,
-        stage AS Stage,
+        stage_id AS StageId,
         status AS Status,
         assigned_to AS AssignedTo,
         started_at AS StartedAt,
@@ -48,13 +49,13 @@ public class ProjectStageRepository : IProjectStageRepository
     public async Task<long> CreateAsync(ProjectStage stage, IDbTransaction? transaction = null)
     {
         const string sql = @"
-            INSERT INTO public.project_stages (project_id, stage, status, assigned_to, started_at, completed_at, remarks, created_at)
+            INSERT INTO public.project_stages (project_id, stage_id, status, assigned_to, started_at, completed_at, remarks, created_at)
             VALUES (@ProjectId, @Stage, @Status, @AssignedTo, @StartedAt, @CompletedAt, @Remarks, COALESCE(@CreatedAt, now()))
             RETURNING id;";
         return await _db.ExecuteScalarAsync<long>(sql, new
         {
             stage.ProjectId,
-            stage.Stage,
+            stage.StageId,
             stage.Status,
             stage.AssignedTo,
             stage.StartedAt,
@@ -99,4 +100,32 @@ public class ProjectStageRepository : IProjectStageRepository
         var rows = await _db.ExecuteAsync(sql, new { Id = id }, transaction: transaction);
         return rows > 0;
     }
+
+    public async Task<EligibleOfficersResponseDTO[]> GetEligibleOfficersByStageAsync(long id, IDbTransaction? transaction = null) {
+
+        const string sql = """
+        SELECT 
+            u.id AS id,
+            u.name AS name,
+            u.email AS email,
+            ARRAY_AGG(DISTINCT r.name) AS roles
+        FROM users u
+        INNER JOIN user_roles ur 
+            ON u.id = ur.user_id
+        INNER JOIN roles r 
+            ON ur.role_id = r.id
+        WHERE ur.role_id IN (
+            SELECT srp.role_id
+            FROM stage_role_permissions srp
+            WHERE srp.stage_id = @ID
+        )
+        GROUP BY u.id, u.name, u.email;
+        """;
+
+        var rows = await _db.QueryAsync<EligibleOfficersResponseDTO>(sql, new {ID = id}, transaction: transaction);
+        return rows.ToArray();
+      
+    }
+
+
 }

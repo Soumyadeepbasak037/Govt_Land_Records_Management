@@ -17,6 +17,6 @@ public class Project
     public long CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
-    public MultiPolygon? Geometry { get; set; }
+    //public MultiPolygon? Geometry { get; set; }
     public string? GeometryGeoJson { get; set; }
 }

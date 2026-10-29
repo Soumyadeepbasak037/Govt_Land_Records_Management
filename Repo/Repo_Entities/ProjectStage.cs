@@ -6,7 +6,7 @@ public class ProjectStage
 {
     public long Id { get; set; }
     public long ProjectId { get; set; }
-    public string Stage { get; set; } = string.Empty;
+    public int StageId { get; set; }
     public string Status { get; set; } = string.Empty;
     public long? AssignedTo { get; set; }
     public DateTimeOffset? StartedAt { get; set; }

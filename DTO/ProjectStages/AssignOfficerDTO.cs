@@ -5,5 +5,6 @@
         public int projectId { get; set; }
         public int stageId { get; set; }
         public int targerUserId { get; set; }
+        public string remarks { get; set; } = string.Empty;
     }
 }

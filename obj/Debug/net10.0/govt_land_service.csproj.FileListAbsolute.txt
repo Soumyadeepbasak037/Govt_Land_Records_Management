@@ -48,3 +48,5 @@ D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Swashbuc
 D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\NetTopologySuite.dll
+D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\NetTopologySuite.IO.PostGis.dll
+D:\CODE\govt_land\govt_land_service\govt_land_service\bin\Debug\net10.0\Npgsql.NetTopologySuite.dll
